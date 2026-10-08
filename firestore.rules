@@ -1,0 +1,16 @@
+// firestore.rules
+// 本系統使用 Firebase Admin SDK 在伺服器端執行所有操作。
+// 這些規則禁止瀏覽器直接讀寫，強制所有存取通過伺服器端。
+// 注意：Admin SDK 繞過 Security Rules，授權檢查必須在 Python 程式碼中自行實作。
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 禁止所有瀏覽器直接存取
+    // 所有讀寫必須透過 Firebase Admin SDK（伺服器端）
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
