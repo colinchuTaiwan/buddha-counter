@@ -1,0 +1,46 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      ".read": false,
+      ".write": false
+    },
+    "username_index": {
+      ".read": false,
+      ".write": false
+    },
+    "recitation_items": {
+      ".read": false,
+      ".write": false
+    },
+    "count_events": {
+      ".read": false,
+      ".write": false
+    },
+    "daily_stats": {
+      ".read": false,
+      ".write": false
+    },
+    "roles": {
+      ".read": false,
+      ".write": false
+    },
+    "role_permissions": {
+      ".read": false,
+      ".write": false
+    },
+    "user_roles": {
+      ".read": false,
+      ".write": false
+    },
+    "audit_logs": {
+      ".read": false,
+      ".write": false
+    },
+    "system_settings": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}
