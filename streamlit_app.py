@@ -11,7 +11,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ── Page config（必須最先執行）────────────────────────────────────────────────
 st.set_page_config(
     page_title="念佛計數器",
     page_icon="🙏",
@@ -19,7 +18,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ── 全域 CSS ───────────────────────────────────────────────────────────────────
 from modules.ui_components import inject_global_css
 inject_global_css()
 
@@ -32,7 +30,7 @@ except Exception as e:
     st.stop()
 
 
-# ── 頁面路由 ───────────────────────────────────────────────────────────────────
+# ── 登入頁面 ───────────────────────────────────────────────────────────────────
 
 def render_login_page() -> None:
     st.markdown("""
@@ -125,7 +123,6 @@ def route() -> None:
         render_force_change_password()
         return
 
-    # ── 需要登入的頁面 ──
     from modules.auth import check_session, logout
     from modules.db import rtdb_get
 
@@ -170,11 +167,18 @@ def route() -> None:
         st.rerun()
 
 
-# ── 主程式入口 ─────────────────────────────────────────────────────────────────
+# ── 主程式入口（含全域錯誤捕捉與記錄）────────────────────────────────────────
 try:
     route()
 except Exception as e:
     logger.exception("未預期的頂層錯誤")
+    # 記錄到 RTDB error_logs
+    try:
+        from modules.audit import log_error
+        user_id = st.session_state.get("user_id")
+        log_error("system_error", str(e), user_id=user_id, exc=e)
+    except Exception:
+        pass
     st.error("系統發生未預期的錯誤，請稍後再試或聯絡管理員。")
     if st.button("返回首頁"):
         from modules.auth import logout
