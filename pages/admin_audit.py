@@ -1,9 +1,8 @@
 """
 pages/admin_audit.py
-管理後台：稽核紀錄查看。僅具備 AUDIT_VIEW 權限者可存取。
+管理後台：稽核紀錄 — RTDB 版本。
 """
 import streamlit as st
-
 from modules.audit import get_audit_logs
 from modules.rbac import require_permission, P, is_superadmin
 from modules.ui_components import page_header, render_nav, gold_divider, info_box
@@ -29,7 +28,6 @@ def render(user_doc: dict) -> None:
         result = log.get("result", "")
         actor = log.get("actor_id", "")
         detail = log.get("detail", {})
-
         color = "#5a8a5a" if result == "success" else "#c05050"
         st.markdown(
             f'<div class="card" style="margin-bottom:0.5rem;font-size:0.95rem">'
