@@ -354,3 +354,39 @@ def render_nav(current_page: str, is_admin: bool = False) -> None:
         logout()
         st.session_state["current_page"] = "login"
         st.rerun()
+
+
+# ── 後台導覽列（獨立於會員前台）─────────────────────────────────────────────────
+
+def render_admin_nav(current: str = "members") -> None:
+    """
+    管理後台專用導覽列。
+    與會員前台完全分開，admin 不能從這裡進入會員頁面。
+    """
+    pages = [
+        ("members",  "👥 會員管理"),
+        ("roles",    "🔐 角色權限"),
+        ("log",      "📋 系統紀錄"),
+    ]
+    cols = st.columns(len(pages) + 1)
+    for i, (key, label) in enumerate(pages):
+        is_active = current == key
+        if cols[i].button(
+            label,
+            key=f"admin_nav_{key}",
+            use_container_width=True,
+            type="primary" if is_active else "secondary",
+        ):
+            page_map = {
+                "members": "admin_members",
+                "roles":   "admin_roles",
+                "log":     "admin_audit",
+            }
+            st.session_state["current_page"] = page_map[key]
+            st.rerun()
+
+    if cols[-1].button("🚪 登出", key="admin_nav_logout", use_container_width=True):
+        from modules.auth import logout
+        logout()
+        st.session_state["current_page"] = "login"
+        st.rerun()

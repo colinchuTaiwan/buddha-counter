@@ -5,7 +5,7 @@ pages/admin_audit.py
 import streamlit as st
 from modules.audit import get_audit_logs, get_error_logs
 from modules.rbac import require_permission, P, is_superadmin
-from modules.ui_components import page_header, render_nav, gold_divider, info_box
+from modules.ui_components import page_header, render_admin_nav, gold_divider, info_box
 
 
 ACTION_OPTIONS = {
@@ -147,7 +147,7 @@ def _render_error_logs(admin_id: str) -> None:
 def render(user_doc: dict) -> None:
     admin_id = user_doc["id"]
     require_permission(admin_id, P.AUDIT_VIEW)
-    render_nav("admin_members", is_admin=True)
+    render_admin_nav("log")
     page_header("📋 系統紀錄", "操作紀錄與錯誤紀錄")
 
     tab1, tab2 = st.tabs(["📝 操作紀錄", "🚨 錯誤紀錄"])

@@ -6,7 +6,7 @@ import streamlit as st
 from modules.audit import log_action
 from modules.db import rtdb_get, rtdb_set, now_tw
 from modules.rbac import require_permission, P, FEATURE_TREE, invalidate_permission_cache
-from modules.ui_components import page_header, render_nav, gold_divider, success_box, error_box
+from modules.ui_components import page_header, render_admin_nav, gold_divider, success_box, error_box
 
 
 def _render_feature_tree() -> None:
@@ -61,7 +61,7 @@ def _render_role_permissions(admin_id: str) -> None:
 def render(user_doc: dict) -> None:
     admin_id = user_doc["id"]
     require_permission(admin_id, P.ROLE_MANAGE)
-    render_nav("admin_members", is_admin=True)
+    render_admin_nav("roles")
     page_header("🔐 角色與權限管理")
     tab1, tab2 = st.tabs(["功能樹", "角色權限設定"])
     with tab1:
